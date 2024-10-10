@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace fuckscrum.api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/projects")]
 public class ProjectController : ControllerBase
 {
-    [HttpGet]
-    public ActionResult List()
+    [HttpGet()]
+    public ActionResult ListAllProjects()
     {
         return Ok(new { message = "Show all proj" });
     }
@@ -24,10 +24,21 @@ public class ProjectController : ControllerBase
         return Ok(new { message = $"Show proj w title {title}" });
     }
 
-    [HttpPost("{id}")]
+    [HttpPost()]
     public ActionResult CreateProject()
     {
         return Created(nameof(GetProjectById), new { message = "createproject called" });
     }
 
+    [HttpPut("{id}")]
+    public ActionResult UpdateProject(int id)
+    {
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteProject(int id)
+    {
+        return NoContent();
+    }
 }
