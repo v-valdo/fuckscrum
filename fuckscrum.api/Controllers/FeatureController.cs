@@ -10,13 +10,13 @@ namespace fuckscrum.api.Controllers
         [HttpGet()]
         public ActionResult ListAllFeatures(int projectId)
         {
-            return Ok(new { message = $"all issues project {projectId}" });
+            return Ok(new { message = $"show all issues for project {projectId}" });
         }
 
         [HttpGet("{id}")]
         public ActionResult GetFeatureById(int projectId, int id)
         {
-            return Ok(new { message = $"issue {id} under {projectId}" });
+            return Ok(new { message = $"show issue  w {id} under project {projectId}" });
         }
 
         [HttpPost()]
