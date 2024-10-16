@@ -8,6 +8,6 @@ public class MemberModel
     public string? Name { get; set; }
     public string? ImageUrl { get; set; }
     public MemberRole Role { get; set; }
-    public List<ProjectModel> Projects { get; set; } = new();
-    public List<FeatureModel> Features { get; set; } = new();
+    public ICollection<ProjectModel>? Projects { get; set; }
+    public ICollection<FeatureModel>? Features { get; set; }
 }

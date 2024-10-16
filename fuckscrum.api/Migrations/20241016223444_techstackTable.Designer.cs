@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fuckscrum.api.Data;
 
@@ -11,9 +12,11 @@ using fuckscrum.api.Data;
 namespace fuckscrum.api.Migrations
 {
     [DbContext(typeof(fuckscrumContext))]
-    partial class fuckscrumContextModelSnapshot : ModelSnapshot
+    [Migration("20241016223444_techstackTable")]
+    partial class techstackTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,21 +90,6 @@ namespace fuckscrum.api.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("ProjectModelTechnologyModel", b =>
-                {
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TechStackId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProjectsId", "TechStackId");
-
-                    b.HasIndex("TechStackId");
-
-                    b.ToTable("ProjectModelTechnologyModel");
-                });
-
             modelBuilder.Entity("TechnologyModel", b =>
                 {
                     b.Property<int>("Id")
@@ -114,7 +102,12 @@ namespace fuckscrum.api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProjectModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectModelId");
 
                     b.ToTable("TechnologyModel");
                 });
@@ -166,24 +159,18 @@ namespace fuckscrum.api.Migrations
                         .HasForeignKey("MemberModelId");
                 });
 
-            modelBuilder.Entity("ProjectModelTechnologyModel", b =>
+            modelBuilder.Entity("TechnologyModel", b =>
                 {
                     b.HasOne("ProjectModel", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TechnologyModel", null)
-                        .WithMany()
-                        .HasForeignKey("TechStackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("TechStack")
+                        .HasForeignKey("ProjectModelId");
                 });
 
             modelBuilder.Entity("ProjectModel", b =>
                 {
                     b.Navigation("Features");
+
+                    b.Navigation("TechStack");
                 });
 
             modelBuilder.Entity("fuckscrum.api.Models.MemberModel", b =>
