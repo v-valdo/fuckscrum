@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fuckscrum.api.Data;
 
@@ -11,9 +12,11 @@ using fuckscrum.api.Data;
 namespace fuckscrum.api.Migrations
 {
     [DbContext(typeof(fuckscrumContext))]
-    partial class fuckscrumContextModelSnapshot : ModelSnapshot
+    [Migration("20241016224707_m2m-project-member")]
+    partial class m2mprojectmember
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fuckscrum.api.Data;
 
@@ -11,9 +12,11 @@ using fuckscrum.api.Data;
 namespace fuckscrum.api.Migrations
 {
     [DbContext(typeof(fuckscrumContext))]
-    partial class fuckscrumContextModelSnapshot : ModelSnapshot
+    [Migration("20241016224344_techmodelCompleted")]
+    partial class techmodelCompleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,21 +63,6 @@ namespace fuckscrum.api.Migrations
                     b.ToTable("Features");
                 });
 
-            modelBuilder.Entity("MemberModelProjectModel", b =>
-                {
-                    b.Property<int>("MembersId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MembersId", "ProjectsId");
-
-                    b.HasIndex("ProjectsId");
-
-                    b.ToTable("MemberModelProjectModel");
-                });
-
             modelBuilder.Entity("ProjectModel", b =>
                 {
                     b.Property<int>("Id")
@@ -86,6 +74,9 @@ namespace fuckscrum.api.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MemberModelId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
@@ -93,6 +84,8 @@ namespace fuckscrum.api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MemberModelId");
 
                     b.ToTable("Projects");
                 });
@@ -169,19 +162,11 @@ namespace fuckscrum.api.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("MemberModelProjectModel", b =>
+            modelBuilder.Entity("ProjectModel", b =>
                 {
                     b.HasOne("fuckscrum.api.Models.MemberModel", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectModel", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Projects")
+                        .HasForeignKey("MemberModelId");
                 });
 
             modelBuilder.Entity("ProjectModelTechnologyModel", b =>
@@ -207,6 +192,8 @@ namespace fuckscrum.api.Migrations
             modelBuilder.Entity("fuckscrum.api.Models.MemberModel", b =>
                 {
                     b.Navigation("Features");
+
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

@@ -8,6 +8,7 @@ public class MemberModel
     public string? Name { get; set; }
     public string? ImageUrl { get; set; }
     public MemberRole Role { get; set; }
+
     public ICollection<ProjectModel>? Projects { get; set; }
     public ICollection<FeatureModel>? Features { get; set; }
 }
