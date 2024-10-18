@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class FeatureModel
 {
@@ -10,6 +11,8 @@ public class FeatureModel
     public int Progress { get; set; }
     public ICollection<FeatureType>? Type { get; set; }
     public int ProjectId { get; set; }
+
+    [ForeignKey("ProjectId")]
     public ProjectModel? Project { get; set; }
 
 }

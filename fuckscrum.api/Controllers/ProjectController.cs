@@ -7,39 +7,56 @@ namespace fuckscrum.api.Controllers;
 [Route("api/projects")]
 public class ProjectController : ControllerBase
 {
-    [HttpGet()]
-    public ActionResult ListAllProjects()
+    private readonly IProjectRepo _projectRepo;
+    public ProjectController(IProjectRepo projectRepo)
     {
-        return Ok(new { message = "Show all proj" });
+        _projectRepo = projectRepo;
+    }
+
+    [HttpGet()]
+    public async Task<ActionResult<List<ProjectModel>>> ListAllProjects()
+    {
+        var projects = await _projectRepo.GetAllAsync();
+        return Ok(projects);
     }
 
     [HttpGet("{id}")]
-    public ActionResult GetProjectById(int id)
+    public async Task<ActionResult> GetProjectById(int id)
     {
-        return Ok(new { message = $"Show proj w id {id}" });
+        var project = await _projectRepo.GetSingleByIdAsync(id);
+        return Ok(project);
     }
 
     [HttpGet("title/{title}")]
-    public ActionResult GetProjectByTitle(string title)
+    public async Task<ActionResult> GetProjectByTitle(string title)
     {
-        return Ok(new { message = $"Show proj w title {title}" });
+        var project = await _projectRepo.GetSingleByTitleAsync(title);
+        return Ok(project);
     }
 
     [HttpPost()]
-    public ActionResult CreateProject()
+    public async Task<ActionResult> CreateProject([FromBody] ProjectModel project)
     {
-        return Created(nameof(GetProjectById), new { message = "createproject called" });
+        await _projectRepo.AddProjectAsync(project);
+        return CreatedAtAction(nameof(GetProjectById), new { id = project.Id }, project);
     }
 
     [HttpPut("{id}")]
-    public ActionResult UpdateProject(int id)
+    public async Task<ActionResult> UpdateProjectAsync(int id, [FromBody] ProjectModel project)
     {
+        if (id != project.Id)
+        {
+            return BadRequest();
+        }
+
+        await _projectRepo.UpdateAsync(project);
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public ActionResult DeleteProject(int id)
+    public async Task<ActionResult> DeleteProject(int id)
     {
+        await _projectRepo.DeleteAsync(id);
         return NoContent();
     }
 }
